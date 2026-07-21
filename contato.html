@@ -55,11 +55,10 @@
   <div class="container split">
     <div>
       <h2>Envie uma mensagem</h2>
-      <form class="contact-form" name="contato" method="POST" data-netlify="true" netlify-honeypot="empresa-site">
-        <input type="hidden" name="form-name" value="contato">
-        <p style="display:none;">
-          <label>Não preencha este campo: <input name="empresa-site"></label>
-        </p>
+      <form class="contact-form" id="contato-form">
+        <input type="hidden" name="access_key" value="94d0823f-a6f8-4337-b634-1171a4440c59">
+        <input type="hidden" name="subject" value="Novo contato pelo site — Trevisan Contábil">
+        <input type="checkbox" name="botcheck" style="display:none;">
         <div class="form-row-2">
           <div>
             <label for="nome">Nome completo</label>
