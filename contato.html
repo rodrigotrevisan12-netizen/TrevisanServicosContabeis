@@ -55,7 +55,11 @@
   <div class="container split">
     <div>
       <h2>Envie uma mensagem</h2>
-      <form class="contact-form">
+      <form class="contact-form" name="contato" method="POST" data-netlify="true" netlify-honeypot="empresa-site">
+        <input type="hidden" name="form-name" value="contato">
+        <p style="display:none;">
+          <label>Não preencha este campo: <input name="empresa-site"></label>
+        </p>
         <div class="form-row-2">
           <div>
             <label for="nome">Nome completo</label>
