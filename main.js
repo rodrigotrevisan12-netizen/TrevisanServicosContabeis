@@ -9,16 +9,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // formulário de contato (demonstrativo — sem backend configurado)
+  // formulário de contato — envio via Netlify Forms (AJAX, sem sair da página)
   var form = document.querySelector('.contact-form');
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var msg = document.querySelector('.form-msg');
-      if (msg) {
-        msg.textContent = 'Mensagem pronta! Configure um serviço de envio (ex: Formspree) ou o e-mail de destino para ativar o formulário.';
-        msg.style.display = 'block';
-      }
+      var data = new FormData(form);
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      })
+        .then(function () {
+          form.reset();
+          if (msg) {
+            msg.textContent = 'Mensagem enviada com sucesso! Vamos retornar em breve.';
+            msg.style.color = 'var(--blue)';
+            msg.style.display = 'block';
+          }
+        })
+        .catch(function () {
+          if (msg) {
+            msg.textContent = 'Não foi possível enviar agora. Tente novamente ou fale por telefone/e-mail.';
+            msg.style.color = '#B3261E';
+            msg.style.display = 'block';
+          }
+        });
     });
   }
 });
