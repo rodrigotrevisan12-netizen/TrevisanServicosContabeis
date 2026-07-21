@@ -9,7 +9,38 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // formulário de contato — envio via Web3Forms (gratuito, sem backend próprio)
+  // página de notícias — busca automática do feed do Portal Contábeis
+  var newsList = document.getElementById('news-list');
+  var newsStatus = document.getElementById('news-status');
+  if (newsList && newsStatus) {
+    var feedUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.contabeis.com.br/rss/noticias/');
+
+    fetch(feedUrl)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.items || !data.items.length) throw new Error('Sem itens');
+
+        var html = data.items.slice(0, 15).map(function (item) {
+          var date = new Date(item.pubDate);
+          var dateStr = isNaN(date) ? '' : date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+          return '' +
+            '<a class="link-row" href="' + item.link + '" target="_blank" rel="noopener">' +
+              '<div>' +
+                '<div class="l-title">' + item.title + '</div>' +
+                '<div class="l-desc">' + dateStr + '</div>' +
+              '</div>' +
+              '<span class="arrow">↗</span>' +
+            '</a>';
+        }).join('');
+
+        newsList.innerHTML = html;
+        newsList.style.display = 'block';
+        newsStatus.style.display = 'none';
+      })
+      .catch(function () {
+        newsStatus.textContent = 'Não foi possível carregar as notícias agora. Tente novamente mais tarde ou acesse diretamente o Portal Contábeis.';
+      });
+  }
   var form = document.querySelector('.contact-form');
   if (form) {
     form.addEventListener('submit', function (e) {
